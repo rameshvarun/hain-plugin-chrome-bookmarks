@@ -40,6 +40,7 @@ module.exports = (context) => {
   }
 
   function search(query, res) {
+    query = query.trim();
     if (query.startsWith('/')) return; // Ignore commands.
 
     // Fuzzy-match the query.

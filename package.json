@@ -1,6 +1,6 @@
 {
   "name": "hain-plugin-chrome-bookmarks",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "hain plugin to search your chrome bookmarks",
   "keywords": [
     "hain0"
@@ -14,7 +14,9 @@
   "author": "Varun Ramesh",
   "license": "MIT",
   "hain": {
-    "usage": "search any of your chrome bookmarks",
+    "prefix": "/b",
+    "usage": "/b any chrome bookmark",
+    "redirect": "/b ",
     "icon": "#fa fa-bookmark-o"
   },
   "dependencies": {
