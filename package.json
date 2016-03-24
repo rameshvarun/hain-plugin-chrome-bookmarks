@@ -1,0 +1,20 @@
+{
+  "name": "hain-plugin-chrome-bookmarks",
+  "version": "0.0.1",
+  "description": "hain plugin to search your chrome bookmarks",
+  "keywords": [
+    "hain0"
+  ],
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appetizermonster/hain-plugin-chrome-bookmarks.git"
+  },
+  "author": "Varun Ramesh",
+  "license": "MIT",
+  "hain": {
+    "usage": "type the name of any of your chrome bookmarks",
+    "icon": "#fa fa-bookmark"
+  }
+}
