@@ -45,7 +45,7 @@ module.exports = (context) => {
 
     // Fuzzy-match the query.
     let results = context.matchutil.fuzzy(bookmarks, query, x => x.name)
-        .filter(x => x.score >= 5) // Remove low-scoring items.
+        .filter(x => x.score >= 0.1) // Remove low-scoring items.
         .slice(0, MAX_RESULTS) // Limit results.
         .map(x => {
       return {
