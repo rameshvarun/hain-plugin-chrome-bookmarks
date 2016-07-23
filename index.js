@@ -4,6 +4,7 @@ const path = require('path');
 const fs = require('fs');
 const favicon = require('favicon');
 const request = require('request');
+const fuzzaldrin = require('fuzzaldrin-plus');
 
 const BOOKMARKS_PATH = path.join(process.env.LOCALAPPDATA, "Google", "Chrome",
   "User Data", "Default", "Bookmarks");
@@ -16,7 +17,10 @@ module.exports = (context) => {
 
   // This function recursively loads bookmarks from folders.
   function load(item) {
-    if (item.type === "url") bookmarks.push(item);
+    if (item.type === "url") {
+      item.search_text = item.name + " " + item.url;
+      bookmarks.push(item);
+    }
     else if (item.type === "folder") item.children.forEach(load);
   }
 
@@ -41,19 +45,22 @@ module.exports = (context) => {
 
   function search(query, res) {
     query = query.trim();
+    if (query.length == 0) return; // Ignore empty query.
     if (query.startsWith('/')) return; // Ignore commands.
 
     // Fuzzy-match the query.
-    let results = context.matchutil.fuzzy(bookmarks, query, x => x.name)
-        .slice(0, MAX_RESULTS) // Limit results.
-        .map(x => {
+    let results = fuzzaldrin.filter(bookmarks, query, {
+          key: 'search_text',
+          maxResults: MAX_RESULTS
+        }).map(x => {
+      let score = fuzzaldrin.score(x.search_text, query);
       return {
-        id: x.elem.id,
-        title: context.matchutil.makeStringBoldHtml(x.elem.name, x.matches),
-        desc: x.elem.url,
-        payload: x.elem.url,
-        score: x.score,
-        icon: favicons.get(x.elem.url)
+        id: x.id,
+        title: x.name,
+        desc: x.url,
+        payload: x.url,
+        score: score,
+        icon: favicons.get(x.url)
       };
     });
     res.add(results);
